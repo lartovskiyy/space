@@ -23,12 +23,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.6s ease;
         }
 
         .text {
             font-size: 4rem;
             font-weight: bold;
-            transition: transform 0.6s ease, opacity 0.6s ease;
+            transition: transform 0.6s ease, opacity 0.3s ease; /* Reduced opacity transition time */
         }
 
         .link {
@@ -48,8 +49,7 @@
         }
 
         .container:hover .text {
-            transform: translateX(-100vw);
-            opacity: 0;
+            opacity: 0; /* Fade out the text */
         }
 
         .container:hover .link {
@@ -87,8 +87,7 @@
             }
 
             .container:active .text {
-                transform: translateX(-100vw);
-                opacity: 0;
+                opacity: 0; /* Fade out the text on click */
             }
 
             .container:active .link {
@@ -105,3 +104,4 @@
     </div>
 </body>
 </html>
+
