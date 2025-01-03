@@ -16,6 +16,7 @@
             color: #fff;
             font-family: Arial, sans-serif;
             overflow: hidden;
+            cursor: none; /* Disable default cursor */
         }
 
         .container {
@@ -29,7 +30,7 @@
         .text {
             font-size: 4rem;
             font-weight: bold;
-            transition: transform 0.6s ease, opacity 0.3s ease; /* Reduced opacity transition time */
+            transition: transform 0.6s ease, opacity 0.3s ease;
         }
 
         .link {
@@ -46,10 +47,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: none; /* Ensure no default cursor on the button */
         }
 
         .container:hover .text {
-            opacity: 0; /* Fade out the text */
+            opacity: 0;
         }
 
         .container:hover .link {
@@ -57,51 +59,59 @@
             pointer-events: auto;
         }
 
-        @media (max-width: 768px) {
-            .text {
-                font-size: 2rem;
-            }
-
-            .link {
-                font-size: 1rem;
-                padding: 8px 16px;
-            }
+        /* Custom cursor styles */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            z-index: 9999;
+            transition: opacity 0.2s ease, transform 0.1s ease;
         }
 
-        @media (max-width: 480px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .text {
-                font-size: 1.5rem;
-                text-align: center;
-            }
-
-            .link {
-                font-size: 0.9rem;
-                padding: 6px 12px;
-                position: relative;
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            .container:active .text {
-                opacity: 0; /* Fade out the text on click */
-            }
-
-            .container:active .link {
-                opacity: 1;
-                pointer-events: auto;
-            }
+        a:hover ~ #cursor,
+        .link:hover ~ #cursor {
+            background-color: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="text">SPACE VPN</div>
-        <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
+        <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажми</a>
     </div>
+
+    <div id="cursor"></div>
+
+    <script>
+        // JavaScript to handle custom cursor behavior
+        const cursor = document.getElementById('cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.opacity = 1;
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('mouseout', () => {
+            cursor.style.opacity = 0;
+        });
+
+        document.querySelectorAll('.link').forEach((el) => {
+            el.addEventListener('mouseover', () => {
+                cursor.style.transform = 'scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>
 
