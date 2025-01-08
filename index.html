@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space VPN</title>
     <style>
+        * {
+            cursor: none;
+        }
+
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            background-image: url('https://i.imgur.com/5fWTiqD.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            transform-origin: center;
+        }
+
+        .custom-cursor.hover {
+            transform: scale(1.5);
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -133,15 +154,16 @@
             box-shadow: 0 0 25px rgba(63, 94, 251, 0.8);
         }
 
-        /* Медиа-запросы для мобильных устройств */
         @media (max-width: 768px) {
             .text {
                 font-size: 2.5rem;
             }
-
             .link {
                 font-size: 1.2rem;
                 padding: 8px 16px;
+            }
+            .custom-cursor {
+                display: none;
             }
         }
 
@@ -149,29 +171,30 @@
             .text {
                 font-size: 2rem;
             }
-
             .link {
                 font-size: 1rem;
                 padding: 6px 12px;
             }
         }
 
-        /* Отключение hover-эффектов на мобильных */
         @media (hover: none) {
             .container:active .text {
                 opacity: 0;
                 transform: scale(0.8);
             }
-
             .container:active .link {
                 opacity: 1;
                 pointer-events: auto;
                 transform: scale(1.1);
             }
+            .custom-cursor {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="custom-cursor"></div>
     <div class="space-background"></div>
     <div class="particles"></div>
     <div class="container">
@@ -180,8 +203,46 @@
     </div>
 
     <script>
+        const cursor = document.querySelector('.custom-cursor');
+        const links = document.querySelectorAll('a, button, .link');
+
+        function moveCursor(e) {
+            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
+        }
+
+        function addHoverClass() {
+            cursor.classList.add('hover');
+        }
+
+        function removeHoverClass() {
+            cursor.classList.remove('hover');
+        }
+
+        document.addEventListener('mousemove', moveCursor);
+        
+        links.forEach(link => {
+            link.addEventListener('mouseenter', addHoverClass);
+            link.addEventListener('mouseleave', removeHoverClass);
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            if (e.relatedTarget === null) {
+                cursor.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('mouseover', () => {
+            cursor.style.display = 'block';
+        });
+
+        if ('ontouchstart' in window) {
+            cursor.style.display = 'none';
+        }
+
+        // Particles
         const particlesContainer = document.querySelector('.particles');
-        const numberOfParticles = 50; // Уменьшено для мобильных
+        const numberOfParticles = 50;
 
         for (let i = 0; i < numberOfParticles; i++) {
             createParticle();
