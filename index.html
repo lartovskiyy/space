@@ -154,6 +154,22 @@
             box-shadow: 0 0 25px rgba(63, 94, 251, 0.8);
         }
 
+        .disclaimer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 80%;
+            z-index: 1;
+            background: rgba(11, 16, 38, 0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            backdrop-filter: blur(5px);
+        }
+
         @media (max-width: 768px) {
             .text {
                 font-size: 2.5rem;
@@ -164,6 +180,10 @@
             }
             .custom-cursor {
                 display: none;
+            }
+            .disclaimer {
+                font-size: 0.7rem;
+                padding: 8px 15px;
             }
         }
 
@@ -201,7 +221,9 @@
         <div class="text">SPACE VPN</div>
         <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
     </div>
-
+    <div class="disclaimer">
+        Данный сайт носит информационный характер и не является пропагандой использования VPN-сервисов на территории РФ
+    </div>
     <script>
         const cursor = document.querySelector('.custom-cursor');
         const links = document.querySelectorAll('a, button, .link');
