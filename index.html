@@ -7,6 +7,14 @@
     <style>
         * {
             cursor: none;
+            scroll-behavior: smooth;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         .custom-cursor {
@@ -26,17 +34,20 @@
             transform: scale(1.5);
         }
 
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         body {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #0B1026;
             color: #fff;
             font-family: Arial, sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            background-color: #0B1026;
         }
 
         .space-background {
@@ -47,6 +58,95 @@
             height: 100%;
             background: linear-gradient(125deg, #000000, #090b1f, #1a1b3b);
             animation: backgroundShift 15s ease infinite;
+        }
+
+        .main-section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .pricing-section {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 80px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+
+        .pricing-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pricing-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .price-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #3F5EFB;
+        }
+
+        .price-card .price {
+            font-size: 2rem;
+            margin: 15px 0;
+            color: #fff;
+        }
+
+        .price-card .duration {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .price-card .features {
+            list-style: none;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .price-card .features li {
+            margin: 10px 0;
+        }
+
+        .price-card .buy-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #3F5EFB, #7225FC);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .price-card .buy-button:hover {
+            transform: scale(1.05);
         }
 
         @keyframes backgroundShift {
@@ -156,17 +256,15 @@
 
         .disclaimer {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 0;
+            left: 0;
+            width: 100%;
             text-align: center;
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.6);
-            max-width: 80%;
             z-index: 1;
-            background: rgba(11, 16, 38, 0.8);
+            background: rgba(11, 16, 38, 0.95);
             padding: 10px 20px;
-            border-radius: 5px;
             backdrop-filter: blur(5px);
         }
 
@@ -179,11 +277,21 @@
                 padding: 8px 16px;
             }
             .custom-cursor {
-                display: none;
+                display: none !important;
             }
             .disclaimer {
                 font-size: 0.7rem;
                 padding: 8px 15px;
+            }
+            .pricing-container {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+            .price-card {
+                margin: 10px 0;
+            }
+            .pricing-section {
+                padding-bottom: 100px;
             }
         }
 
@@ -194,6 +302,9 @@
             .link {
                 font-size: 1rem;
                 padding: 6px 12px;
+            }
+            .price-card .price {
+                font-size: 1.75rem;
             }
         }
 
@@ -208,67 +319,113 @@
                 transform: scale(1.1);
             }
             .custom-cursor {
-                display: none;
+                display: none !important;
+            }
+            * {
+                cursor: auto;
             }
         }
     </style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
     <div class="space-background"></div>
     <div class="particles"></div>
-    <div class="container">
-        <div class="text">SPACE VPN</div>
-        <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
-    </div>
-    <div class="disclaimer">
+    
+    <section class="main-section">
+        <div class="container">
+            <div class="text no-select">SPACE VPN</div>
+            <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="prices">
+        <div class="pricing-container">
+            <div class="price-card">
+                <h3>Стандарт</h3>
+                <div class="price">90₽</div>
+                <div class="duration">в месяц</div>
+                <ul class="features">
+                    <li>Доступ ко всем сервисам</li>
+                    <li>Скорость до 1500 Мбит/с</li>
+                    <li>2 устройства</li>
+                </ul>
+                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
+            </div>
+
+            <div class="price-card">
+                <h3>Стандарт +</h3>
+                <div class="price">150₽</div>
+                <div class="duration">в месяц</div>
+                <ul class="features">
+                    <li>Доступ ко всем сервисам</li>
+                    <li>Скорость до 1500 Мбит/с</li>
+                    <li>4 устройства</li>
+                </ul>
+                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
+            </div>
+
+            <div class="price-card">
+                <h3>Премиум</h3>
+                <div class="price">249₽</div>
+                <div class="duration">в месяц</div>
+                <ul class="features">
+                    <li>Доступ ко всем сервисам</li>
+                    <li>Максимальная скорость</li>
+                    <li>8 устройств</li>
+                </ul>
+                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="disclaimer no-select">
         Данный сайт носит информационный характер и не является пропагандой использования VPN-сервисов на территории РФ
     </div>
+
     <script>
-        const cursor = document.querySelector('.custom-cursor');
-        const links = document.querySelectorAll('a, button, .link');
-
-        function moveCursor(e) {
-            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
-            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
-        }
-
-        function addHoverClass() {
-            cursor.classList.add('hover');
-        }
-
-        function removeHoverClass() {
-            cursor.classList.remove('hover');
-        }
-
-        document.addEventListener('mousemove', moveCursor);
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        links.forEach(link => {
-            link.addEventListener('mouseenter', addHoverClass);
-            link.addEventListener('mouseleave', removeHoverClass);
-        });
+        if (!isMobile) {
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
 
-        document.addEventListener('mouseout', (e) => {
-            if (e.relatedTarget === null) {
-                cursor.style.display = 'none';
+            function moveCursor(e) {
+                cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+                cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
             }
-        });
 
-        document.addEventListener('mouseover', () => {
-            cursor.style.display = 'block';
-        });
+            document.addEventListener('mousemove', moveCursor);
+            
+            const links = document.querySelectorAll('a, button, .link');
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
 
-        if ('ontouchstart' in window) {
-            cursor.style.display = 'none';
+            document.addEventListener('mouseout', (e) => {
+                if (e.relatedTarget === null) {
+                    cursor.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('mouseover', () => {
+                cursor.style.display = 'block';
+            });
         }
 
-        // Particles
+        const pricingSection = document.querySelector('.pricing-section');
+
+        setTimeout(() => {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+            pricingSection.classList.add('visible');
+        }, 2000);
+
         const particlesContainer = document.querySelector('.particles');
-        const numberOfParticles = 50;
-
-        for (let i = 0; i < numberOfParticles; i++) {
-            createParticle();
-        }
+        const numberOfParticles = 30;
 
         function createParticle() {
             const particle = document.createElement('div');
@@ -294,6 +451,32 @@
                 createParticle();
             });
         }
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            createParticle();
+        }
+
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.classList.contains('no-select')) {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('copy', (e) => {
+            if (e.target.classList.contains('no-select')) {
+                e.preventDefault();
+            }
+        });
+
+        let ticking = false;
+        document.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
     </script>
 </body>
 </html>
