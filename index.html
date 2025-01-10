@@ -292,6 +292,13 @@
             }
             .pricing-section {
                 padding-bottom: 100px;
+                opacity: 1;  /* Make pricing section visible by default on mobile */
+                transform: translateY(0);  /* Reset transform on mobile */
+            }
+            /* Mobile-specific link behavior */
+            .mobile-link {
+                text-decoration: none;
+                color: inherit;
             }
         }
 
@@ -333,7 +340,10 @@
     
     <section class="main-section">
         <div class="container">
-            <div class="text no-select">SPACE VPN</div>
+            <div class="text no-select" id="mainTitle">
+                <span class="desktop-text">SPACE VPN</span>
+                <a href="https://t.me/spaace_vpn" class="mobile-link">SPACE VPN</a>
+            </div>
             <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
         </div>
     </section>
@@ -342,7 +352,7 @@
         <div class="pricing-container">
             <div class="price-card">
                 <h3>Стандарт</h3>
-                <div class="price">90₽</div>
+                <div class="price">100₽</div>
                 <div class="duration">в месяц</div>
                 <ul class="features">
                     <li>Доступ ко всем сервисам</li>
@@ -366,12 +376,12 @@
 
             <div class="price-card">
                 <h3>Премиум</h3>
-                <div class="price">249₽</div>
+                <div class="price">200₽</div>
                 <div class="duration">в месяц</div>
                 <ul class="features">
                     <li>Доступ ко всем сервисам</li>
-                    <li>Максимальная скорость</li>
-                    <li>8 устройств</li>
+                    <li>Скорость до 1500 Мбит/с</li>
+                    <li>6 устройств</li>
                 </ul>
                 <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
             </div>
@@ -382,101 +392,105 @@
         Данный сайт носит информационный характер и не является пропагандой использования VPN-сервисов на территории РФ
     </div>
 
-    <script>
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+<script>
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Handle mobile/desktop specific elements
+    if (isMobile) {
+        document.querySelector('.desktop-text').style.display = 'none';
+    } else {
+        document.querySelector('.mobile-link').style.display = 'none';
         
-        if (!isMobile) {
-            const cursor = document.createElement('div');
-            cursor.className = 'custom-cursor';
-            document.body.appendChild(cursor);
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
 
-            function moveCursor(e) {
-                cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
-                cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
-            }
-
-            document.addEventListener('mousemove', moveCursor);
-            
-            const links = document.querySelectorAll('a, button, .link');
-            links.forEach(link => {
-                link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-            });
-
-            document.addEventListener('mouseout', (e) => {
-                if (e.relatedTarget === null) {
-                    cursor.style.display = 'none';
-                }
-            });
-
-            document.addEventListener('mouseover', () => {
-                cursor.style.display = 'block';
-            });
+        function moveCursor(e) {
+            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
         }
 
-        const pricingSection = document.querySelector('.pricing-section');
+        document.addEventListener('mousemove', moveCursor);
+        
+        const links = document.querySelectorAll('a, button, .link');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
 
+        document.addEventListener('mouseout', (e) => {
+            if (e.relatedTarget === null) {
+                cursor.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('mouseover', () => {
+            cursor.style.display = 'block';
+        });
+
+        // Only add auto-scroll for desktop
         setTimeout(() => {
             window.scrollTo({
                 top: window.innerHeight,
                 behavior: 'smooth'
             });
-            pricingSection.classList.add('visible');
+            document.querySelector('.pricing-section').classList.add('visible');
         }, 10000);
+    }
 
-        const particlesContainer = document.querySelector('.particles');
-        const numberOfParticles = 30;
+    const particlesContainer = document.querySelector('.particles');
+    const numberOfParticles = 30;
 
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            const x = Math.random() * 100;
-            const size = 1 + Math.random() * 2;
-            const duration = 15 + Math.random() * 10;
-            const delay = Math.random() * duration;
-            
-            particle.style.cssText = `
-                left: ${x}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-duration: ${duration}s;
-                animation-delay: -${delay}s;
-            `;
-            
-            particlesContainer.appendChild(particle);
-            
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-                createParticle();
-            });
-        }
-
-        for (let i = 0; i < numberOfParticles; i++) {
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const x = Math.random() * 100;
+        const size = 1 + Math.random() * 2;
+        const duration = 15 + Math.random() * 10;
+        const delay = Math.random() * duration;
+        
+        particle.style.cssText = `
+            left: ${x}%;
+            width: ${size}px;
+            height: ${size}px;
+            animation-duration: ${duration}s;
+            animation-delay: -${delay}s;
+        `;
+        
+        particlesContainer.appendChild(particle);
+        
+        particle.addEventListener('animationend', () => {
+            particle.remove();
             createParticle();
+        });
+    }
+
+    for (let i = 0; i < numberOfParticles; i++) {
+        createParticle();
+    }
+
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.classList.contains('no-select')) {
+            e.preventDefault();
         }
+    });
 
-        document.addEventListener('contextmenu', (e) => {
-            if (e.target.classList.contains('no-select')) {
-                e.preventDefault();
-            }
-        });
+    document.addEventListener('copy', (e) => {
+        if (e.target.classList.contains('no-select')) {
+            e.preventDefault();
+        }
+    });
 
-        document.addEventListener('copy', (e) => {
-            if (e.target.classList.contains('no-select')) {
-                e.preventDefault();
-            }
-        });
-
-        let ticking = false;
-        document.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-    </script>
+    let ticking = false;
+    document.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+</script>
 </body>
 </html>
