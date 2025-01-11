@@ -75,14 +75,9 @@
             justify-content: center;
             align-items: center;
             padding: 40px 20px 80px 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-        }
-
-        .pricing-section.visible {
             opacity: 1;
             transform: translateY(0);
+            transition: all 1s ease;
         }
 
         .pricing-container {
@@ -275,6 +270,7 @@
             .link {
                 font-size: 1.2rem;
                 padding: 8px 16px;
+                display: none;
             }
             .custom-cursor {
                 display: none !important;
@@ -292,10 +288,15 @@
             }
             .pricing-section {
                 padding-bottom: 100px;
-                opacity: 1;  /* Make pricing section visible by default on mobile */
-                transform: translateY(0);  /* Reset transform on mobile */
             }
-            /* Mobile-specific link behavior */
+            .container:hover .text,
+            .container:active .text {
+                opacity: 1;
+                transform: none;
+            }
+            * {
+                cursor: auto;
+            }
             .mobile-link {
                 text-decoration: none;
                 color: inherit;
@@ -306,25 +307,12 @@
             .text {
                 font-size: 2rem;
             }
-            .link {
-                font-size: 1rem;
-                padding: 6px 12px;
-            }
             .price-card .price {
                 font-size: 1.75rem;
             }
         }
 
         @media (hover: none) {
-            .container:active .text {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            .container:active .link {
-                opacity: 1;
-                pointer-events: auto;
-                transform: scale(1.1);
-            }
             .custom-cursor {
                 display: none !important;
             }
@@ -352,7 +340,7 @@
         <div class="pricing-container">
             <div class="price-card">
                 <h3>Стандарт</h3>
-                <div class="price">100₽</div>
+                <div class="price">90₽</div>
                 <div class="duration">в месяц</div>
                 <ul class="features">
                     <li>Доступ ко всем сервисам</li>
@@ -376,12 +364,12 @@
 
             <div class="price-card">
                 <h3>Премиум</h3>
-                <div class="price">200₽</div>
+                <div class="price">249₽</div>
                 <div class="duration">в месяц</div>
                 <ul class="features">
                     <li>Доступ ко всем сервисам</li>
-                    <li>Скорость до 1500 Мбит/с</li>
-                    <li>6 устройств</li>
+                    <li>Максимальная скорость</li>
+                    <li>8 устройств</li>
                 </ul>
                 <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
             </div>
@@ -392,105 +380,103 @@
         Данный сайт носит информационный характер и не является пропагандой использования VPN-сервисов на территории РФ
     </div>
 
-<script>
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    // Handle mobile/desktop specific elements
-    if (isMobile) {
-        document.querySelector('.desktop-text').style.display = 'none';
-    } else {
-        document.querySelector('.mobile-link').style.display = 'none';
+    <script>
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        document.body.appendChild(cursor);
+        if (isMobile) {
+            document.querySelector('.desktop-text').style.display = 'none';
+        } else {
+            document.querySelector('.mobile-link').style.display = 'none';
+            
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
 
-        function moveCursor(e) {
-            cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
-            cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
+            function moveCursor(e) {
+                cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
+                cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
+            }
+
+            document.addEventListener('mousemove', moveCursor);
+            
+            const links = document.querySelectorAll('a, button, .link');
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+
+            document.addEventListener('mouseout', (e) => {
+                if (e.relatedTarget === null) {
+                    cursor.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('mouseover', () => {
+                cursor.style.display = 'block';
+            });
+
+            setTimeout(() => {
+                window.scrollTo({
+                    top: window.innerHeight,
+                    behavior: 'smooth'
+                });
+            }, 10000);
         }
 
-        document.addEventListener('mousemove', moveCursor);
-        
-        const links = document.querySelectorAll('a, button, .link');
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-        });
+        const particlesContainer = document.querySelector('.particles');
+        const numberOfParticles = 30;
 
-        document.addEventListener('mouseout', (e) => {
-            if (e.relatedTarget === null) {
-                cursor.style.display = 'none';
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const x = Math.random() * 100;
+            const size = 1 + Math.random() * 2;
+            const duration = 15 + Math.random() * 10;
+            const delay = Math.random() * duration;
+            
+            particle.style.cssText = `
+                left: ${x}%;
+                width: ${size}px;
+                height: ${size}px;
+                animation-duration: ${duration}s;
+                animation-delay: -${delay}s;
+            `;
+            
+            particlesContainer.appendChild(particle);
+            
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+                createParticle();
+            });
+        }
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            createParticle();
+        }
+
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.classList.contains('no-select')) {
+                e.preventDefault();
             }
         });
 
-        document.addEventListener('mouseover', () => {
-            cursor.style.display = 'block';
+        document.addEventListener('copy', (e) => {
+            if (e.target.classList.contains('no-select')) {
+                e.preventDefault();
+            }
         });
 
-        // Only add auto-scroll for desktop
-        setTimeout(() => {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
-            document.querySelector('.pricing-section').classList.add('visible');
-        }, 10000);
-    }
-
-    const particlesContainer = document.querySelector('.particles');
-    const numberOfParticles = 30;
-
-    function createParticle() {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const x = Math.random() * 100;
-        const size = 1 + Math.random() * 2;
-        const duration = 15 + Math.random() * 10;
-        const delay = Math.random() * duration;
-        
-        particle.style.cssText = `
-            left: ${x}%;
-            width: ${size}px;
-            height: ${size}px;
-            animation-duration: ${duration}s;
-            animation-delay: -${delay}s;
-        `;
-        
-        particlesContainer.appendChild(particle);
-        
-        particle.addEventListener('animationend', () => {
-            particle.remove();
-            createParticle();
+        let ticking = false;
+        document.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
-    }
-
-    for (let i = 0; i < numberOfParticles; i++) {
-        createParticle();
-    }
-
-    document.addEventListener('contextmenu', (e) => {
-        if (e.target.classList.contains('no-select')) {
-            e.preventDefault();
-        }
-    });
-
-    document.addEventListener('copy', (e) => {
-        if (e.target.classList.contains('no-select')) {
-            e.preventDefault();
-        }
-    });
-
-    let ticking = false;
-    document.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
+</antArt
