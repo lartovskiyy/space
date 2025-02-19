@@ -1,482 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space VPN</title>
-    <style>
-        * {
-            cursor: none;
-            scroll-behavior: smooth;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        .custom-cursor {
-            width: 20px;
-            height: 20px;
-            background-image: url('https://i.imgur.com/5fWTiqD.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-            transform-origin: center;
-        }
-
-        .custom-cursor.hover {
-            transform: scale(1.5);
-        }
-
-        .no-select {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-            background-color: #0B1026;
-        }
-
-        .space-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(125deg, #000000, #090b1f, #1a1b3b);
-            animation: backgroundShift 15s ease infinite;
-        }
-
-        .main-section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .pricing-section {
-            min-height: 100vh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px 80px 20px;
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 1s ease;
-        }
-
-        .pricing-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            width: 100%;
-            z-index: 1;
-        }
-
-        .price-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .price-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .price-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #3F5EFB;
-        }
-
-        .price-card .price {
-            font-size: 2rem;
-            margin: 15px 0;
-            color: #fff;
-        }
-
-        .price-card .duration {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px;
-        }
-
-        .price-card .features {
-            list-style: none;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .price-card .features li {
-            margin: 10px 0;
-        }
-
-        .price-card .buy-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #3F5EFB, #7225FC);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .price-card .buy-button:hover {
-            transform: scale(1.05);
-        }
-
-        @keyframes backgroundShift {
-            0%, 100% { transform: scale(1.1); }
-            50% { transform: scale(1); }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            animation: particleFloat linear infinite;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
-        }
-
-        .container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.6s ease;
-            z-index: 1;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .text {
-            font-size: 4rem;
-            font-weight: bold;
-            transition: all 0.6s ease;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
-            to { 
-                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
-                            0 0 30px rgba(63, 94, 251, 0.8),
-                            0 0 40px rgba(114, 37, 252, 0.8);
-            }
-        }
-
-        .link {
-            position: absolute;
-            font-size: 1.5rem;
-            text-decoration: none;
-            color: #fff;
-            background: linear-gradient(45deg, #3F5EFB, #7225FC);
-            padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.6s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(63, 94, 251, 0.5);
-            white-space: nowrap;
-        }
-
-        .container:hover .text,
-        .container:active .text {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        .container:hover .link,
-        .container:active .link {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1.1);
-        }
-
-        .link:hover,
-        .link:active {
-            transform: scale(1.2) !important;
-            box-shadow: 0 0 25px rgba(63, 94, 251, 0.8);
-        }
-
-        .disclaimer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            z-index: 1;
-            background: rgba(11, 16, 38, 0.95);
-            padding: 10px 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        @media (max-width: 768px) {
-            .text {
-                font-size: 2.5rem;
-            }
-            .link {
-                font-size: 1.2rem;
-                padding: 8px 16px;
-                display: none;
-            }
-            .custom-cursor {
-                display: none !important;
-            }
-            .disclaimer {
-                font-size: 0.7rem;
-                padding: 8px 15px;
-            }
-            .pricing-container {
-                grid-template-columns: 1fr;
-                padding: 0 20px;
-            }
-            .price-card {
-                margin: 10px 0;
-            }
-            .pricing-section {
-                padding-bottom: 100px;
-            }
-            .container:hover .text,
-            .container:active .text {
-                opacity: 1;
-                transform: none;
-            }
-            * {
-                cursor: auto;
-            }
-            .mobile-link {
-                text-decoration: none;
-                color: inherit;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .text {
-                font-size: 2rem;
-            }
-            .price-card .price {
-                font-size: 1.75rem;
-            }
-        }
-
-        @media (hover: none) {
-            .custom-cursor {
-                display: none !important;
-            }
-            * {
-                cursor: auto;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPACE VPN Инструкции</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --accent: #404040;
+      --hover-accent: #505050;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    header {
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--accent);
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+    
+    main {
+      max-width: 1200px;
+      width: 90%;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+    
+    .device-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .device-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .device-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .device-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .device-name {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .device-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    
+    .instruction-link {
+      display: inline-block;
+      background-color: var(--accent);
+      color: var(--text-primary);
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+      text-align: center;
+    }
+    
+    .instruction-link:hover {
+      background-color: var(--hover-accent);
+    }
+    
+    footer {
+      margin-top: auto;
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--accent);
+    }
+    
+    @media (max-width: 768px) {
+      .device-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="space-background"></div>
-    <div class="particles"></div>
-    
-    <section class="main-section">
-        <div class="container">
-            <div class="text no-select" id="mainTitle">
-                <span class="desktop-text">SPACE VPN</span>
-                <a href="https://t.me/spaace_vpn" class="mobile-link">SPACE VPN</a>
-            </div>
-            <a href="https://t.me/spaace_vpn" target="_blank" class="link">Нажимай</a>
-        </div>
-    </section>
-
-    <section class="pricing-section" id="prices">
-        <div class="pricing-container">
-            <div class="price-card">
-                <h3>Стандарт</h3>
-                <div class="price">90₽</div>
-                <div class="duration">в месяц</div>
-                <ul class="features">
-                    <li>Доступ ко всем сервисам</li>
-                    <li>Скорость до 1500 Мбит/с</li>
-                    <li>2 устройства</li>
-                </ul>
-                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
-            </div>
-
-            <div class="price-card">
-                <h3>Стандарт +</h3>
-                <div class="price">150₽</div>
-                <div class="duration">в месяц</div>
-                <ul class="features">
-                    <li>Доступ ко всем сервисам</li>
-                    <li>Скорость до 1500 Мбит/с</li>
-                    <li>4 устройства</li>
-                </ul>
-                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
-            </div>
-
-            <div class="price-card">
-                <h3>Премиум</h3>
-                <div class="price">249₽</div>
-                <div class="duration">в месяц</div>
-                <ul class="features">
-                    <li>Доступ ко всем сервисам</li>
-                    <li>Максимальная скорость</li>
-                    <li>8 устройств</li>
-                </ul>
-                <a href="https://t.me/spaace_vpn" class="buy-button">Купить</a>
-            </div>
-        </div>
-    </section>
-
-    <div class="disclaimer no-select">
-        Данный сайт носит информационный характер и не является пропагандой использования VPN-сервисов на территории РФ
+  <header>
+    <h1>Инструкции по настройке VPN</h1>
+    <p class="subtitle">Безопасное подключение для всех ваших устройств</p>
+  </header>
+  
+  <main>
+    <div class="device-grid">
+      <!-- Windows -->
+      <div class="device-card">
+        <div class="device-icon">💻</div>
+        <h2 class="device-name">Windows</h2>
+        <p class="device-description">Пошаговые инструкции по настройке VPN на компьютерах и ноутбуках с операционной системой Windows 10/11.</p>
+        <a href="#windows" class="instruction-link">Открыть инструкцию</a>
+      </div>
+      
+      <!-- Android -->
+      <div class="device-card">
+        <div class="device-icon">📱</div>
+        <h2 class="device-name">Android</h2>
+        <p class="device-description">Как настроить VPN на смартфонах и планшетах Android для безопасного интернет-соединения.</p>
+        <a href="#android" class="instruction-link">Открыть инструкцию</a>
+      </div>
+      
+      <!-- iOS -->
+      <div class="device-card">
+        <div class="device-icon">📲</div>
+        <h2 class="device-name">iOS</h2>
+        <p class="device-description">Инструкции по настройке VPN на iPhone и iPad с новейшими версиями iOS.</p>
+        <a href="#ios" class="instruction-link">Открыть инструкцию</a>
+      </div>
+      
+      <!-- Linux -->
+      <div class="device-card">
+        <div class="device-icon">🐧</div>
+        <h2 class="device-name">Linux</h2>
+        <p class="device-description">Руководство по настройке VPN-соединения на различных дистрибутивах Linux (Ubuntu, Debian, Fedora).</p>
+        <a href="#linux" class="instruction-link">Открыть инструкцию</a>
+      </div>
+      
+      <!-- Android TV -->
+      <div class="device-card">
+        <div class="device-icon">📺</div>
+        <h2 class="device-name">Android TV</h2>
+        <p class="device-description">Подробная инструкция по установке и настройке VPN на телевизорах и приставках с Android TV.</p>
+        <a href="#androidtv" class="instruction-link">Открыть инструкцию</a>
+      </div>
     </div>
-
-    <script>
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        if (isMobile) {
-            document.querySelector('.desktop-text').style.display = 'none';
-        } else {
-            document.querySelector('.mobile-link').style.display = 'none';
-            
-            const cursor = document.createElement('div');
-            cursor.className = 'custom-cursor';
-            document.body.appendChild(cursor);
-
-            function moveCursor(e) {
-                cursor.style.left = e.clientX - cursor.offsetWidth / 2 + 'px';
-                cursor.style.top = e.clientY - cursor.offsetHeight / 2 + 'px';
-            }
-
-            document.addEventListener('mousemove', moveCursor);
-            
-            const links = document.querySelectorAll('a, button, .link');
-            links.forEach(link => {
-                link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-            });
-
-            document.addEventListener('mouseout', (e) => {
-                if (e.relatedTarget === null) {
-                    cursor.style.display = 'none';
-                }
-            });
-
-            document.addEventListener('mouseover', () => {
-                cursor.style.display = 'block';
-            });
-
-            setTimeout(() => {
-                window.scrollTo({
-                    top: window.innerHeight,
-                    behavior: 'smooth'
-                });
-            }, 10000);
-        }
-
-        const particlesContainer = document.querySelector('.particles');
-        const numberOfParticles = 30;
-
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            const x = Math.random() * 100;
-            const size = 1 + Math.random() * 2;
-            const duration = 15 + Math.random() * 10;
-            const delay = Math.random() * duration;
-            
-            particle.style.cssText = `
-                left: ${x}%;
-                width: ${size}px;
-                height: ${size}px;
-                animation-duration: ${duration}s;
-                animation-delay: -${delay}s;
-            `;
-            
-            particlesContainer.appendChild(particle);
-            
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-                createParticle();
-            });
-        }
-
-        for (let i = 0; i < numberOfParticles; i++) {
-            createParticle();
-        }
-
-        document.addEventListener('contextmenu', (e) => {
-            if (e.target.classList.contains('no-select')) {
-                e.preventDefault();
-            }
-        });
-
-        document.addEventListener('copy', (e) => {
-            if (e.target.classList.contains('no-select')) {
-                e.preventDefault();
-            }
-        });
-
-        let ticking = false;
-        document.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-    </script>
+  </main>
+  
+  <footer>
+    <p>© 2025 SPACE VPN. Все права защищены.</p>
+    <p>Информация предоставлена исключительно в образовательных целях.</p>
+  </footer>
 </body>
 </html>
-</antArt
