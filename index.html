@@ -1,187 +1,245 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPACE VPN</title>
-  <style>
-    :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-primary: #e0e0e0;
-      --text-secondary: #a0a0a0;
-      --accent: #404040;
-      --hover-accent: #505050;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    header {
-      padding: 2rem;
-      text-align: center;
-      border-bottom: 1px solid var(--accent);
-    }
-    
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 300;
-      margin-bottom: 0.5rem;
-    }
-    
-    .subtitle {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-    }
-    
-    main {
-      max-width: 1200px;
-      width: 90%;
-      margin: 3rem auto;
-      padding: 0 1rem;
-    }
-    
-    .device-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-    
-    .device-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .device-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .device-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-    }
-    
-    .device-name {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    
-    .device-description {
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-      flex-grow: 1;
-    }
-    
-    .instruction-link {
-      display: inline-block;
-      background-color: var(--accent);
-      color: var(--text-primary);
-      padding: 0.7rem 1.2rem;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.2s ease;
-      text-align: center;
-    }
-    
-    .instruction-link:hover {
-      background-color: var(--hover-accent);
-    }
-    
-    footer {
-      margin-top: auto;
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--accent);
-    }
-    
-    @media (max-width: 768px) {
-      .device-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPACE VPN - Инструкции по настройке</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A0A0C;
+            --secondary: #6366F1;
+            --accent: #818CF8;
+            --text: #F1F5F9;
+            --bg-gradient: linear-gradient(135deg, #0A0A0C, #1A1A1F);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --hover-color: #818CF8;
+            --card-border: rgba(255, 255, 255, 0.05);
+            --card-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 1rem;
+            background: radial-gradient(circle at top, rgba(99, 102, 241, 0.08), transparent 70%);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        main {
+            max-width: 1400px;
+            width: 90%;
+            margin: 4rem auto;
+            padding: 0 1rem;
+        }
+
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        .device-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .device-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .device-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--card-shadow);
+        }
+
+        .device-card:hover::before {
+            opacity: 1;
+        }
+
+        .device-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .device-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .device-description {
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .instruction-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .instruction-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            background: rgba(10, 10, 12, 0.5);
+        }
+
+        footer p {
+            color: var(--text);
+            opacity: 0.6;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 3rem 1rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            main {
+                margin: 2rem auto;
+            }
+
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .device-card {
+                padding: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>SPACE VPN</h1>
-    <p class="subtitle">Безопасное подключение для всех ваших устройств</p>
-  </header>
-  
-  <main>
-    <div class="device-grid">
-      <!-- Windows -->
-      <div class="device-card">
-        <div class="device-icon">💻</div>
-        <h2 class="device-name">Windows</h2>
-        <p class="device-description">Пошаговые инструкции по настройке VPN на компьютерах и ноутбуках с операционной системой Windows 10/11.</p>
-        <a href="https://telegra.ph/SPACE-VPN--GAJD-DLYA-WINDOWS-01-20" class="instruction-link">Открыть инструкцию</a>
-      </div>
-      
-      <!-- Android -->
-      <div class="device-card">
-        <div class="device-icon">📱</div>
-        <h2 class="device-name">Android</h2>
-        <p class="device-description">Как настроить VPN на смартфонах и планшетах Android для безопасного интернет-соединения.</p>
-        <a href="https://telegra.ph/SPACE-VPN-FOR-ANDROID-01-26" class="instruction-link">Открыть инструкцию</a>
-      </div>
-      
-      <!-- iOS -->
-      <div class="device-card">
-        <div class="device-icon">📲</div>
-        <h2 class="device-name">iOS</h2>
-        <p class="device-description">Инструкции по настройке VPN на iPhone и iPad с новейшими версиями iOS.</p>
-        <a href="https://telegra.ph/SPACE-VPN-FOR-IOS-01-26" class="instruction-link">Открыть инструкцию</a>
-      </div>
-      
-      <!-- Linux -->
-      <div class="device-card">
-        <div class="device-icon">🐧</div>
-        <h2 class="device-name">Linux</h2>
-        <p class="device-description">Руководство по настройке VPN-соединения на различных дистрибутивах Linux (Ubuntu, Debian, Fedora).</p>
-        <a href="https://telegra.ph/SPACE-VPN-FOR-LINUX-02-19" class="instruction-link">Открыть инструкцию</a>
-      </div>
-      
-      <!-- Android TV -->
-      <div class="device-card">
-        <div class="device-icon">📺</div>
-        <h2 class="device-name">Android TV</h2>
-        <p class="device-description">Подробная инструкция по установке и настройке VPN на телевизорах и приставках с Android TV.</p>
-        <a href="https://telegra.ph/SPACE-VPN-FOR-ANDROID-TV-02-11" class="instruction-link">Открыть инструкцию</a>
-      </div>
-    </div>
-  </main>
-  
-  <footer>
-    <p>© 2025 SPACE VPN. Все права защищены.</p>
-    <p>Информация предоставлена исключительно в образовательных целях.</p>
-  </footer>
+    <header>
+        <div class="logo">SPACE VPN</div>
+    </header>
+
+    <main>
+        <div class="device-grid">
+            <div class="device-card">
+                <i class="device-icon fab fa-windows"></i>
+                <h2 class="device-name">Windows</h2>
+                <p class="device-description">Пошаговые инструкции по настройке VPN на компьютерах и ноутбуках с операционной системой Windows 10/11.</p>
+                <a href="https://telegra.ph/SPACE-VPN--GAJD-DLYA-WINDOWS-01-20" class="instruction-link">
+                    Открыть
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="device-card">
+                <i class="device-icon fab fa-android"></i>
+                <h2 class="device-name">Android</h2>
+                <p class="device-description">Как настроить VPN на смартфонах и планшетах Android для безопасного интернет-соединения.</p>
+                <a href="https://telegra.ph/SPACE-VPN-FOR-ANDROID-01-26" class="instruction-link">
+                    Открыть
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="device-card">
+                <i class="device-icon fab fa-apple"></i>
+                <h2 class="device-name">iOS</h2>
+                <p class="device-description">Инструкции по настройке VPN на iPhone и iPad с новейшими версиями iOS.</p>
+                <a href="https://telegra.ph/SPACE-VPN-FOR-IOS-01-26" class="instruction-link">
+                    Открыть
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="device-card">
+                <i class="device-icon fab fa-linux"></i>
+                <h2 class="device-name">Linux</h2>
+                <p class="device-description">Руководство по настройке VPN-соединения на различных дистрибутивах Linux (Ubuntu, Debian, Fedora).</p>
+                <a href="https://telegra.ph/SPACE-VPN-FOR-LINUX-02-19" class="instruction-link">
+                    Открыть
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="device-card">
+                <i class="device-icon fas fa-tv"></i>
+                <h2 class="device-name">Android TV</h2>
+                <p class="device-description">Подробная инструкция по установке и настройке VPN на телевизорах и приставках с Android TV.</p>
+                <a href="https://telegra.ph/SPACE-VPN-FOR-ANDROID-TV-02-11" class="instruction-link">
+                    Открыть
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Информация предоставлена исключительно в образовательных целях.</p>
+    </footer>
 </body>
 </html>
