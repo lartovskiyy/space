@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPACE VPN - Инструкции по настройке</title>
+    <title>SPACE VPN</title>
+    <!-- Favicon через Imgur (замените URL на ваш) -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/05m4BdQ.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0A0A0C;
-            --secondary: #6366F1;
-            --accent: #818CF8;
+            --primary: #0A1A2A;
+            --secondary: #3498db;
+            --accent: #5dade2;
             --text: #F1F5F9;
-            --bg-gradient: linear-gradient(135deg, #0A0A0C, #1A1A1F);
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --hover-color: #818CF8;
-            --card-border: rgba(255, 255, 255, 0.05);
-            --card-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+            --bg-gradient: linear-gradient(125deg, #061224, #0c2d4e, #0a1a2a, #1c4975);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --hover-color: #5dade2;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 8px 32px rgba(52, 152, 219, 0.15);
+            --glow-color: rgba(52, 152, 219, 0.25);
         }
 
         * {
@@ -28,41 +31,51 @@
 
         body {
             background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             color: var(--text);
             line-height: 1.7;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center; /* Горизонтальное центрирование */
+            align-items: center; /* Вертикальное центрирование */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
         }
 
         header {
             text-align: center;
-            padding: 1rem;
-            background: radial-gradient(circle at top, rgba(99, 102, 241, 0.08), transparent 70%);
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
+            padding: 0; /* Убрал padding */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         main {
-            max-width: 1400px;
+            max-width: 1300px;
             width: 90%;
-            margin: 4rem auto;
             padding: 0 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .device-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            perspective: 1000px;
         }
 
         .device-card {
@@ -76,23 +89,26 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            min-height: 300px;
         }
 
         .device-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(140deg, rgba(255,255,255,0.2), transparent, rgba(83, 184, 255, 0.3));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
             transition: opacity 0.4s ease;
         }
 
         .device-card:hover {
             transform: translateY(-5px) scale(1.02);
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 15px 40px -10px var(--glow-color);
         }
 
         .device-card:hover::before {
@@ -102,7 +118,7 @@
         .device-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            background: linear-gradient(135deg, white, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -119,6 +135,7 @@
             opacity: 0.8;
             margin-bottom: 2rem;
             flex-grow: 1;
+            font-size: 1rem;
         }
 
         .instruction-link {
@@ -127,61 +144,117 @@
             gap: 0.5rem;
             background: linear-gradient(135deg, var(--secondary), var(--accent));
             color: white;
-            padding: 0.6rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 100px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
             justify-content: center;
             font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .instruction-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
         }
 
         .instruction-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
         }
 
-        footer {
-            margin-top: auto;
-            padding: 1rem;
-            text-align: center;
-            border-top: 1px solid var(--card-border);
-            background: rgba(10, 10, 12, 0.5);
+        .instruction-link:hover::before {
+            transform: translateX(100%);
         }
 
-        footer p {
-            color: var(--text);
-            opacity: 0.6;
-            font-size: 0.9rem;
-            margin: 0;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media (max-width: 1200px) {
+            main {
+                max-width: 1000px;
+                width: 95%;
+            }
+            .device-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            .device-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            main {
+                width: 98%;
+            }
+            .device-grid {
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 1.25rem;
+            }
+            .device-card {
+                padding: 1.75rem;
+            }
         }
 
         @media (max-width: 768px) {
             header {
-                padding: 3rem 1rem;
+                padding: 0;
             }
-
-            .logo {
-                font-size: 2rem;
-            }
-
             main {
-                margin: 2rem auto;
+                width: 100%;
+                padding: 1rem; /* Добавил отступы сверху и снизу для мобильных */
             }
-
             .device-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
-
             .device-card {
                 padding: 2rem;
+                min-height: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0;
+            }
+            main {
+                padding: 1rem; /* Небольшие отступы от краёв */
+            }
+            .device-card {
+                padding: 1.5rem;
+            }
+            .device-icon {
+                font-size: 2rem;
+            }
+            .device-name {
+                font-size: 1.3rem;
+            }
+            .instruction-link {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">SPACE VPN</div>
+        <!-- Надпись SPACE VPN убрана -->
     </header>
 
     <main>
@@ -237,9 +310,5 @@
             </div>
         </div>
     </main>
-
-    <footer>
-        <p>Информация предоставлена исключительно в образовательных целях.</p>
-    </footer>
 </body>
 </html>
