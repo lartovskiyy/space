@@ -31,13 +31,14 @@
         body {
             background: var(--bg-gradient);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            /* Removed animation: gradientShift 15s ease infinite; */
+            background-position: 0% 50%; /* Fixed position for gradient */
             color: var(--text);
             line-height: 1.7;
             min-height: 100vh;
             display: flex;
-            justify-content: center; /* Горизонтальное центрирование */
-            align-items: center; /* Вертикальное центрирование */
+            justify-content: center;
+            align-items: center;
             position: relative;
             overflow-x: hidden;
         }
@@ -57,7 +58,7 @@
 
         header {
             text-align: center;
-            padding: 0; /* Убрал padding */
+            padding: 0;
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -83,7 +84,7 @@
             padding: 2.5rem;
             border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             position: relative;
@@ -177,11 +178,7 @@
             transform: translateX(100%);
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        /* Removed gradientShift keyframes animation */
 
         @media (max-width: 1200px) {
             main {
@@ -216,7 +213,7 @@
             }
             main {
                 width: 100%;
-                padding: 1rem; /* Добавил отступы сверху и снизу для мобильных */
+                padding: 1rem;
             }
             .device-grid {
                 grid-template-columns: 1fr;
@@ -233,7 +230,7 @@
                 padding: 0;
             }
             main {
-                padding: 1rem; /* Небольшие отступы от краёв */
+                padding: 1rem;
             }
             .device-card {
                 padding: 1.5rem;
